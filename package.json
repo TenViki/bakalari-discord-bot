@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@types/config": "^0.0.39",
+    "config": "^3.3.6"
+  }
+}
