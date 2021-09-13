@@ -1,4 +1,4 @@
-import { MessageEmbed, TextBasedChannels, User } from "discord.js";
+import { TextBasedChannels, User } from "discord.js";
 import { CommandHandler, CommandType, ParamType } from "../types/Command.type";
 import config from "config";
 import { getCommands } from "../utils/commands";
