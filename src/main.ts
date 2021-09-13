@@ -1,5 +1,6 @@
 import config from "config";
 import { Client, Intents } from "discord.js";
+import { setupCommands } from "./commands";
 import * as logger from "./utils/logger";
 
 // Starting the logger
@@ -21,4 +22,6 @@ bot.once("ready", (cl) => {
   logger.log(
     `Successfuly logged into discord system as ${cl.user.username}#${cl.user.discriminator}`
   );
+
+  setupCommands(cl);
 });
