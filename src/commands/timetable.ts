@@ -4,6 +4,8 @@ export const run = (m: Message) => {
   m.reply("Timetable");
 };
 
-export const params = () => {};
+export const params = () => {
+  return [];
+};
 
 export const description = () => "Shows timetable";
