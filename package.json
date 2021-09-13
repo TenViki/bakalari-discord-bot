@@ -1,6 +1,10 @@
 {
   "dependencies": {
+    "@types/adm-zip": "^0.4.34",
     "@types/config": "^0.0.39",
-    "config": "^3.3.6"
+    "adm-zip": "^0.5.6",
+    "colors": "^1.4.0",
+    "config": "^3.3.6",
+    "discord.js": "^13.1.0"
   }
 }
