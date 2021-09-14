@@ -1,6 +1,6 @@
 import { Message, TextBasedChannels } from "discord.js";
 import { getTimetable } from "../api/timetable";
-import { CommandHandler } from "../types/Command.type";
+import { CommandHandler } from "../types/Command.Type";
 import { createEmbed } from "../utils/embed";
 
 export const run: CommandHandler = async (m, _, channel, author) => {

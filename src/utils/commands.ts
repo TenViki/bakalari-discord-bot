@@ -1,5 +1,8 @@
 import fs from "fs/promises";
-import { CommandType } from "../types/Command.type";
+import { CommandType } from "../types/Command.Type";
+import { Guild, User } from "discord.js";
+import { Storage } from "../storage";
+import { createEmbed } from "./embed";
 
 export const getCommands = async () => {
   const files = await fs.readdir("src/commands/");
@@ -14,4 +17,32 @@ export const getCommands = async () => {
   }
 
   return commands;
+};
+
+export const getPrefix = (guild: Guild | null): string => {
+  if (!guild) return "bk!";
+
+  const data = Storage.prefixes.find((g) => g.guildId === guild.id);
+  if (!data) return "bk!";
+
+  return data.prefix;
+};
+
+export const createHelpEmbed = (
+  commands: CommandType[],
+  author: User,
+  prefix: string
+) => {
+  return createEmbed(
+    author,
+    "Nápověda",
+    `Nápověda k botovi \`Bakaláři API\`\nPrefix pro tento server: \`${prefix}\``
+  ).addFields(
+    commands.map((el) => {
+      return {
+        name: `${prefix}${el.name}`,
+        value: el.description(),
+      };
+    })
+  );
 };

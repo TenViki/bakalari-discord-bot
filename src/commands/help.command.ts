@@ -1,26 +1,16 @@
 import { TextBasedChannels, User } from "discord.js";
-import { CommandHandler, CommandType, ParamType } from "../types/Command.type";
+import { CommandHandler, CommandType, ParamType } from "../types/Command.Type";
 import config from "config";
-import { getCommands } from "../utils/commands";
+import { getCommands, getPrefix } from "../utils/commands";
 import { createEmbed } from "../utils/embed";
+import { createHelpEmbed } from "../utils/commands";
 
-export const run: CommandHandler = async (_, args, channel, author) => {
+export const run: CommandHandler = async (m, args, channel, author) => {
   if (args[1]) return sendHelpOneCommand(args[1], channel, author);
 
   const commands = await getCommands();
 
-  const helpEmbed = createEmbed(
-    author,
-    "Nápověda",
-    "Nápověda k botovi `Bakaláři API`"
-  ).addFields(
-    commands.map((el) => {
-      return {
-        name: `${config.get("prefix")}${el.name}`,
-        value: el.description(),
-      };
-    })
-  );
+  const helpEmbed = createHelpEmbed(commands, author, getPrefix(m.guild));
 
   channel.send({ embeds: [helpEmbed] });
 };

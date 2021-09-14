@@ -29,7 +29,7 @@ export const setup = async () => {
   await writeFile("logs/latest.log", "");
 };
 
-export const log = async (text: string) => {
+export const info = async (text: string) => {
   const date = getFormattedDateForLogging(new Date());
   console.log(grey(`[${date}] `) + blue("[INFO] ") + text);
   await appendToLog(`[${date}] [INFO] ${text}`);
@@ -41,11 +41,11 @@ export const warn = async (text: string) => {
   await appendToLog(`[${date}] [WARN] ${text}`);
 };
 
-export const error = async (ex: any) => {
+export const error = async (message: string, ex: any) => {
   const date = getFormattedDateForLogging(new Date());
   console.log(grey(`[${date}] `) + red("[ERR] ") + ex.message);
   console.log(red(ex));
-  await appendToLog(`[${date}] [ERR] ${ex.message}`);
+  await appendToLog(`[${date}] [ERR] ${message}`);
   await appendToLog(ex.stack);
 };
 

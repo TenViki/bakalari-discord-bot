@@ -1,6 +1,9 @@
-import { CommandHandler, ParamType } from "../types/Command.type";
+import { Storage } from "../storage";
+import { CommandHandler, ParamType } from "../types/Command.Type";
 
-export const run: CommandHandler = (m) => {};
+export const run: CommandHandler = (m) => {
+  console.log(Storage.prefixes);
+};
 
 export const params = (): ParamType[] => {
   return [
