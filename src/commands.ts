@@ -4,12 +4,12 @@ import config from "config";
 import { CommandType } from "./types/Command.type";
 import { getCommands } from "./utils/commands";
 
-export const setupCommands = async (clinet: Client) => {
+export const setupCommands = async (client: Client) => {
   log("Reading commands directory...");
 
   let commands: CommandType[] = await getCommands();
 
-  clinet.on("messageCreate", (message) => {
+  client.on("messageCreate", (message) => {
     if (message.author.bot) return;
     if (!message.content.startsWith(config.get("prefix"))) return;
     message.content = message.content.replace(config.get("prefix"), "");
@@ -22,6 +22,6 @@ export const setupCommands = async (clinet: Client) => {
       return;
     }
 
-    command.run(message, args, message.channel, message.author);
+    command.run(message, args, message.channel, message.author, client);
   });
 };

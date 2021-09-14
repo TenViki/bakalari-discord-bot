@@ -7,8 +7,8 @@ export const getCommands = async () => {
   const commands: CommandType[] = [];
 
   for (const file of files) {
-    const cmdName = file.replace(".ts", "");
-    const data = await import(`../commands/${cmdName}`);
+    const cmdName = file.replace(".command.ts", "");
+    const data = await import(`../commands/${cmdName}.command`);
 
     commands.push({ ...data, name: cmdName });
   }

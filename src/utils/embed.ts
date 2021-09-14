@@ -3,10 +3,11 @@ import { MessageEmbed, User } from "discord.js";
 export const createEmbed = (
   author: User,
   title: string,
-  description: string
+  description: string,
+  error?: string
 ) => {
   return new MessageEmbed()
-    .setColor("#3498db")
+    .setColor(error ? "#e74c3c" : "#3498db")
     .setTitle(title)
     .setDescription(description)
     .setFooter(

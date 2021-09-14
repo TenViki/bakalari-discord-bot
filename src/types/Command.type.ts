@@ -1,4 +1,4 @@
-import { Message, TextBasedChannels, User } from "discord.js";
+import { Client, Message, TextBasedChannels, User } from "discord.js";
 
 export interface CommandType {
   run: CommandHandler;
@@ -16,5 +16,6 @@ export type CommandHandler = (
   message: Message,
   args: string[],
   channel: TextBasedChannels,
-  author: User
+  author: User,
+  client: Client
 ) => void;
