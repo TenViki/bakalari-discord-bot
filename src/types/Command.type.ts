@@ -1,4 +1,5 @@
 import { Client, Message, TextBasedChannels, User } from "discord.js";
+import { Guild } from "./Guild.Type";
 
 export interface CommandType {
   run: CommandHandler;
@@ -14,6 +15,7 @@ export interface ParamType {
 
 export type CommandHandler = (
   message: Message,
+  guild: Guild | null,
   args: string[],
   channel: TextBasedChannels,
   author: User,

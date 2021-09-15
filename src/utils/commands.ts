@@ -3,6 +3,7 @@ import { CommandType } from "../types/Command.Type";
 import { Guild, User } from "discord.js";
 import { Storage } from "../storage";
 import { createEmbed } from "./embed";
+import { Guild as GuildType } from "../types/Guild.Type";
 
 export const getCommands = async () => {
   const files = await fs.readdir("src/commands/");
@@ -31,12 +32,15 @@ export const getPrefix = (guild: Guild | null): string => {
 export const createHelpEmbed = (
   commands: CommandType[],
   author: User,
-  prefix: string
+  prefix: string,
+  guild?: GuildType | null
 ) => {
   return createEmbed(
     author,
     "Nápověda",
-    `Nápověda k botovi \`Bakaláři API\`\nPrefix pro tento server: \`${prefix}\``
+    `Nápověda k botovi \`Bakaláři API\`\nPrefix ${
+      guild ? "pro tento server" : ""
+    }: \`${prefix}\``
   ).addFields(
     commands.map((el) => {
       return {

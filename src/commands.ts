@@ -32,7 +32,18 @@ export const setupCommands = async (client: Client) => {
     const command = commands.find((el) => el.name === args[0]);
     if (!command) return;
 
-    command.run(message, args, message.channel, message.author, client);
+    const guildData = message.guild
+      ? GuildModel.findOne({ guildId: message.guild.id })
+      : null;
+
+    command.run(
+      message,
+      guildData,
+      args,
+      message.channel,
+      message.author,
+      client
+    );
   });
   info(`Commands mapped [${commands.map((el) => el.name).join(", ")}]`);
 

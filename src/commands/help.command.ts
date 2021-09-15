@@ -4,13 +4,19 @@ import config from "config";
 import { getCommands, getPrefix } from "../utils/commands";
 import { createEmbed } from "../utils/embed";
 import { createHelpEmbed } from "../utils/commands";
+import { error } from "../utils/logger";
 
-export const run: CommandHandler = async (m, args, channel, author) => {
+export const run: CommandHandler = async (m, guild, args, channel, author) => {
   if (args[1]) return sendHelpOneCommand(args[1], channel, author);
 
   const commands = await getCommands();
 
-  const helpEmbed = createHelpEmbed(commands, author, getPrefix(m.guild));
+  const helpEmbed = createHelpEmbed(
+    commands,
+    author,
+    getPrefix(m.guild),
+    guild
+  );
 
   channel.send({ embeds: [helpEmbed] });
 };
@@ -33,7 +39,7 @@ const sendHelpOneCommand = async (
   author: User
 ) => {
   try {
-    const cmdData: CommandType = await import(`../commands/${command}`);
+    const cmdData: CommandType = await import(`../commands/${command}.command`);
     const helpEmbed = createEmbed(
       author,
       `Nápověda • ${command}`,
@@ -47,7 +53,8 @@ const sendHelpOneCommand = async (
       })
     );
     channel.send({ embeds: [helpEmbed] });
-  } catch (error) {
+  } catch (ex) {
+    error("Error", ex);
     channel.send("Příkaz nebyl nalezen");
   }
 };

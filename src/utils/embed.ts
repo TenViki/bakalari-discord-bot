@@ -4,7 +4,7 @@ export const createEmbed = (
   author: User,
   title: string,
   description: string,
-  error?: string
+  error?: boolean
 ) => {
   return new MessageEmbed()
     .setColor(error ? "#e74c3c" : "#3498db")
