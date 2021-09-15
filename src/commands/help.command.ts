@@ -1,4 +1,9 @@
-import { TextBasedChannels, User } from "discord.js";
+import {
+  ApplicationCommandOptionData,
+  CommandInteraction,
+  TextBasedChannels,
+  User,
+} from "discord.js";
 import { CommandHandler, CommandType, ParamType } from "../types/Command.Type";
 import config from "config";
 import { getCommands, getPrefix } from "../utils/commands";
@@ -6,26 +11,34 @@ import { createEmbed } from "../utils/embed";
 import { createHelpEmbed } from "../utils/commands";
 import { error } from "../utils/logger";
 
-export const run: CommandHandler = async (m, guild, args, channel, author) => {
-  if (args[1]) return sendHelpOneCommand(args[1], channel, author);
+export const run: CommandHandler = async (i, guild) => {
+  const commandArg = i.options.getString("command");
+  if (commandArg) return sendHelpOneCommand(commandArg, i, i.user);
 
   const commands = await getCommands();
 
   const helpEmbed = createHelpEmbed(
     commands,
-    author,
-    getPrefix(m.guild),
+    i.user,
+    getPrefix(i.guild),
     guild
   );
 
-  channel.send({ embeds: [helpEmbed] });
+  i.reply({ embeds: [helpEmbed] });
 };
 
-export const params = (): ParamType[] => {
+export const params = (
+  commands: CommandType[]
+): ApplicationCommandOptionData[] => {
   return [
     {
-      name: "<příkaz>",
-      description: "Ukáže nápovědu k danému příkazu",
+      name: "command",
+      type: "STRING",
+      choices: commands.map((e) => {
+        return { name: e.name, value: e.description() };
+      }),
+      description: "Příkaz pro který chcete zobrazit nápovědu",
+      required: false,
     },
   ];
 };
@@ -35,7 +48,7 @@ export const description = () =>
 
 const sendHelpOneCommand = async (
   command: string,
-  channel: TextBasedChannels,
+  i: CommandInteraction,
   author: User
 ) => {
   try {
@@ -48,13 +61,13 @@ const sendHelpOneCommand = async (
       cmdData.params().map((el) => {
         return {
           name: el.name,
-          value: el.description,
+          value: el.name,
         };
       })
     );
-    channel.send({ embeds: [helpEmbed] });
+    i.reply({ embeds: [helpEmbed] });
   } catch (ex) {
     error("Error", ex);
-    channel.send("Příkaz nebyl nalezen");
+    i.reply("Příkaz nebyl nalezen");
   }
 };

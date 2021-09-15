@@ -2,15 +2,8 @@ import { getPing } from "../api/bakalari";
 import { CommandHandler } from "../types/Command.Type";
 import { createEmbed } from "../utils/embed";
 
-export const run: CommandHandler = async (
-  m,
-  guild,
-  _2,
-  channel,
-  author,
-  client
-) => {
-  const messageTs = m.createdTimestamp;
+export const run: CommandHandler = async (i, guild, client) => {
+  const messageTs = i.createdTimestamp;
   const now = Date.now();
 
   const isInDms = guild ? false : true;
@@ -21,7 +14,7 @@ export const run: CommandHandler = async (
   const errorMessage = isInDms ? "*Není dostupné v DM*" : url;
 
   const pingEmbed = createEmbed(
-    author,
+    i.user,
     "Ping",
     `Ping bota: \n\nKlient ➔ Bot: ${clientToBot}ms \nBot ➔ Discord: ${
       client.ws.ping
@@ -30,10 +23,10 @@ export const run: CommandHandler = async (
     }: ${errorMessage}`
   );
 
-  channel.send({ embeds: [pingEmbed] });
+  i.reply({ embeds: [pingEmbed] });
 };
 
 export const description = () => "Ukáže ping bota";
-export const args = () => {
+export const params = () => {
   return [];
 };

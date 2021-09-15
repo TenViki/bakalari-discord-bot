@@ -5,11 +5,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  bakaUsername: {
-    type: String,
-    required: true,
-  },
-  bakaPassword: {
+  serverId: {
     type: String,
     required: true,
   },

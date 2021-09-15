@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@discordjs/rest": "^0.1.0-canary.0",
     "@types/adm-zip": "^0.4.34",
     "@types/config": "^0.0.39",
     "@types/jsdom": "^16.2.13",
@@ -9,6 +10,7 @@
     "colors": "^1.4.0",
     "concurrently": "^6.2.1",
     "config": "^3.3.6",
+    "discord-api-types": "^0.23.1",
     "discord.js": "^13.1.0",
     "jsdom": "^17.0.0",
     "mongoose": "^6.0.5"
@@ -20,7 +22,7 @@
   "author": "TenViki <viktorkomarek28@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "compile": "tsc --w",
-    "start:dev": "nodemon"
+    "compile": "tsc",
+    "dev": "nodemon src/main.ts"
   }
 }

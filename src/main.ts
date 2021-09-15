@@ -35,7 +35,6 @@ const bot: Client = new Client({
   ],
   partials: ["MESSAGE", "USER", "CHANNEL", "GUILD_MEMBER", "REACTION"],
 });
-
 // Loging the bot into discord system
 bot.login(config.get("bot-token"));
 

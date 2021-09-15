@@ -6,11 +6,6 @@ const guildSchema = new Schema<Guild>({
     type: String,
     required: true,
   },
-  prefix: {
-    type: String,
-    required: true,
-    default: "bk!",
-  },
   bakaUrl: {
     type: String,
   },
@@ -20,11 +15,9 @@ const guildSchema = new Schema<Guild>({
   timetableChannel: {
     type: String,
   },
-  timetableTimes: [
-    {
-      type: String,
-    },
-  ],
+  timetableTimes: {
+    type: String,
+  },
 });
 
 export default model("server", guildSchema);
