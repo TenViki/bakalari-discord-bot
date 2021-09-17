@@ -2,12 +2,14 @@ import {
   ApplicationCommandOptionData,
   Client,
   CommandInteraction,
+  GuildMember,
+  User,
 } from "discord.js";
 import { Guild } from "./Guild.Type";
 
 export interface CommandType {
   run: CommandHandler;
-  params: () => ApplicationCommandOptionData[];
+  params: (commands?: CommandType[]) => ApplicationCommandOptionData[];
   description: () => string;
   name: string;
 }
@@ -20,5 +22,6 @@ export interface ParamType {
 export type CommandHandler = (
   interaction: CommandInteraction,
   guild: Guild | null,
-  client: Client
+  client: Client,
+  author: GuildMember | undefined
 ) => void;

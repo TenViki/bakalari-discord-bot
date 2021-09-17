@@ -1,14 +1,11 @@
 import {
   ApplicationCommandOptionData,
   CommandInteraction,
-  TextBasedChannels,
   User,
 } from "discord.js";
-import { CommandHandler, CommandType, ParamType } from "../types/Command.Type";
-import config from "config";
-import { getCommands, getPrefix } from "../utils/commands";
+import { CommandHandler, CommandType } from "../types/Command.Type";
+import { createHelpEmbed, getCommands } from "../utils/commands";
 import { createEmbed } from "../utils/embed";
-import { createHelpEmbed } from "../utils/commands";
 import { error } from "../utils/logger";
 
 export const run: CommandHandler = async (i, guild) => {
@@ -17,12 +14,7 @@ export const run: CommandHandler = async (i, guild) => {
 
   const commands = await getCommands();
 
-  const helpEmbed = createHelpEmbed(
-    commands,
-    i.user,
-    getPrefix(i.guild),
-    guild
-  );
+  const helpEmbed = createHelpEmbed(commands, i.user, guild);
 
   i.reply({ embeds: [helpEmbed] });
 };
@@ -34,8 +26,8 @@ export const params = (
     {
       name: "command",
       type: "STRING",
-      choices: commands.map((e) => {
-        return { name: e.name, value: e.description() };
+      choices: commands?.map((e) => {
+        return { name: e.name, value: e.name };
       }),
       description: "Příkaz pro který chcete zobrazit nápovědu",
       required: false,
@@ -61,7 +53,7 @@ const sendHelpOneCommand = async (
       cmdData.params().map((el) => {
         return {
           name: el.name,
-          value: el.name,
+          value: el.description,
         };
       })
     );

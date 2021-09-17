@@ -3,7 +3,6 @@ import { Client, Intents } from "discord.js";
 import mongoose from "mongoose";
 import { setupCommands } from "./commands";
 import { registerEvents } from "./events";
-import { Storage } from "./storage";
 import * as logger from "./utils/logger";
 
 // Enabling weird SSL, because our bakalari does have that (Found it on Stack Overflow and it works, so..)
@@ -11,13 +10,6 @@ process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
 
 // Starting the logger
 logger.setup();
-
-Storage.prefixes = [
-  {
-    guildId: "5343214",
-    prefix: "test",
-  },
-];
 
 // Loading the mongoose stuff
 mongoose

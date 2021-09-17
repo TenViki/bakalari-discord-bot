@@ -2,15 +2,18 @@ import { CommandHandler, ParamType } from "../types/Command.Type";
 import { createEmbed } from "../utils/embed";
 import { Errors } from "../errors/Errors";
 import { ApplicationCommandOptionData, Permissions } from "discord.js";
-import { getPrefix } from "../utils/commands";
 import { Guild } from "../types/Guild.Type";
 import GuildModel from "../schema/Guild.Schema";
-import { Storage } from "../storage";
 
 type Keys = { [n: string]: string };
 
-export const run: CommandHandler = async (i, guild) => {
-  if (!i.guild || !guild) {
+export const run: CommandHandler = async (i, guild, _, author) => {
+  const { options } = i;
+
+  const setKey = options.getString("key");
+  const setValue = options.getString("value");
+
+  if (!i.guild || !guild || !author) {
     const errorEmbed = createEmbed(
       i.user,
       "Chyba",
@@ -24,21 +27,18 @@ export const run: CommandHandler = async (i, guild) => {
 
   if (!i.member) return;
 
-  if (!i.member) {
+  if (!author.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
     const errorEmbed = createEmbed(i.user, "Chyba", Errors.ERR_FORBIDDEN, true);
 
     i.reply({ embeds: [errorEmbed] });
     return;
   }
 
-  if (!args[1]) {
+  if (!setKey) {
     const errorEmbed = createEmbed(
       i.user,
       "Chyba",
-      `${Errors.WRONG_USAGE.replaceAll(
-        "%prefix%",
-        getPrefix(i.guild)
-      ).replaceAll("%cmd%", "set")}`,
+      `${Errors.WRONG_USAGE.replaceAll("%cmd%", "set")}`,
       true
     );
 
@@ -46,7 +46,7 @@ export const run: CommandHandler = async (i, guild) => {
     return;
   }
 
-  if (!Object.keys(keys).includes(args[1])) {
+  if (!Object.keys(keys).includes(setKey)) {
     const errorEmbed = createEmbed(
       i.user,
       "Chyba",
@@ -54,16 +54,16 @@ export const run: CommandHandler = async (i, guild) => {
       true
     );
 
-    m.channel.send({ embeds: [errorEmbed] });
+    i.reply({ embeds: [errorEmbed] });
     return;
   }
 
-  if (!args[2]) {
-    const value = guild[args[1] as keyof Guild];
+  if (!setValue) {
+    const value = guild[setKey as keyof Guild];
     const helpembed = createEmbed(
       i.user,
-      `Nastavení hodnoty ${args[1]}`,
-      `${keys[args[1]]}\nAktuální hodnota: ${
+      `Nastavení hodnoty ${setKey}`,
+      `${keys[setKey]}\nAktuální hodnota: ${
         value ? "`" + value + "`" : "*Nenastaveno*"
       }`
     );
@@ -74,17 +74,14 @@ export const run: CommandHandler = async (i, guild) => {
 
   await GuildModel.updateOne(
     { guildId: guild.guildId },
-    { [args[1]]: args[2] }
+    { [setKey]: setValue }
   );
 
   const embed = createEmbed(
     i.user,
     "Úspěšně aktualizováno",
-    `Úspěnšně jsme aktualizovali hodnotu *${args[1]}* na \`${args[2]}\``
+    `Úspěnšně jsme aktualizovali hodnotu *${setKey}* na \`${setValue}\``
   );
-
-  const data = Storage.prefixes.find((d) => d.guildId === guild.guildId);
-  if (data) data.prefix = args[2];
 
   i.reply({ embeds: [embed] });
 };
@@ -111,12 +108,12 @@ export const params = (): ApplicationCommandOptionData[] => [
 ];
 
 const keys: Keys = {
-  prefix: "Prefix serveru, kde se nastavuje.",
   bakaUrl:
     "Url bakalářu. Měla by být ve formátu `https://bakalari.example.com/api`.",
   logChannel: "Kanál, do kterého se logují eventy.",
   timetableChannel:
     "Kanál, do kterého se bude posílat ve specifikovaný čas rozvrh hodin na příští den. (Formát `hh:mm`)",
+  timetableTime: "Čas, kdy se pošle rozvrh.",
 };
 
 export const description = () => "Nastaví konkrétní nastavení serveru";

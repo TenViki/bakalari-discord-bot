@@ -1,6 +1,6 @@
 import { CommandHandler } from "../types/Command.Type";
 
-export const run: CommandHandler = async (m, _, _0, channel, author) => {
+export const run: CommandHandler = async () => {
   // Nothing here yet
 };
 
