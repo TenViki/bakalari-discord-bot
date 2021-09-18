@@ -5,9 +5,6 @@ import { setupCommands } from "./commands";
 import { registerEvents } from "./events";
 import * as logger from "./utils/logger";
 
-// Enabling weird SSL, because our bakalari does have that (Found it on Stack Overflow and it works, so..)
-process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
-
 // Starting the logger
 logger.setup();
 

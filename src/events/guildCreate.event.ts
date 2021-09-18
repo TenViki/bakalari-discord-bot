@@ -8,6 +8,4 @@ export const run: EventHandler = async (guild: Guild) => {
   const createdGuild = await GuildModel.create({
     guildId: guild.id,
   });
-
-  console.log(createdGuild);
 };

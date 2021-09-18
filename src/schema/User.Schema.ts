@@ -1,20 +1,23 @@
 import { model, Schema } from "mongoose";
+import { UserType } from "../types/User.Type";
 
-const userSchema = new Schema({
+const userSchema = new Schema<UserType>({
   discordId: {
     type: String,
     required: true,
   },
-  serverId: {
+  guildId: {
     type: String,
     required: true,
   },
   accessToken: {
     type: String,
+    required: true,
   },
   refreshToken: {
     type: String,
+    required: true,
   },
 });
 
-export default model("server", userSchema);
+export default model("user", userSchema);

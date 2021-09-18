@@ -43,7 +43,7 @@ export const warn = async (text: string) => {
 
 export const error = async (message: string, ex: any) => {
   const date = getFormattedDateForLogging(new Date());
-  console.log(grey(`[${date}] `) + red("[ERR] ") + ex.message);
+  console.log(grey(`[${date}] `) + red("[ERR] ") + message);
   console.log(red(ex));
   await appendToLog(`[${date}] [ERR] ${message}`);
   await appendToLog(ex.stack);

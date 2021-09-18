@@ -5,6 +5,8 @@ import { CommandType } from "./types/Command.Type";
 import { createHelpEmbed, getCommands } from "./utils/commands";
 import GuildModel from "./schema/Guild.Schema";
 import { Guild } from "./types/Guild.Type";
+const { Routes } = require("discord-api-types/v9");
+const { REST } = require("@discordjs/rest");
 
 export const setupCommands = async (client: Client) => {
   let commands: CommandType[] = await getCommands();
@@ -23,14 +25,15 @@ export const setupCommands = async (client: Client) => {
 
   info("Registering slash commands");
 
-  for (const command of commands) {
-    await slashCommands?.create({
-      name: command.name,
-      description: command.description(),
-      options: command.params(commands),
-    });
-  }
+  const slashCommandsArray = commands.map((cmd) => {
+    return {
+      name: cmd.name,
+      description: cmd.description(),
+      options: cmd.params(commands),
+    };
+  });
 
+  slashCommands?.set(slashCommandsArray);
   info(`Commands mapped [${commands.map((el) => el.name).join(", ")}]`);
 
   // Listening to slash commands
