@@ -10,10 +10,6 @@ export const createEmbed = (
     .setColor(error ? "#e74c3c" : "#3498db")
     .setTitle(title)
     .setDescription(description)
-    .setFooter(
-      `${author.username}#${author.discriminator}`,
-      author.avatarURL({}) || ""
-    )
     .setTimestamp();
 };
 

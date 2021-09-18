@@ -1,4 +1,52 @@
-export interface Timetable {
+export class Timetable {
+  public hours;
+  public days;
+  public classes;
+  public groups;
+  public subjects;
+  public teachers;
+  public rooms;
+  public cycles;
+  constructor(timetable: TimetableType) {
+    this.hours = timetable.Hours;
+    this.days = timetable.Days;
+    this.classes = timetable.Classes;
+    this.groups = timetable.Groups;
+    this.subjects = timetable.Subjects;
+    this.teachers = timetable.Teachers;
+    this.rooms = timetable.Rooms;
+    this.cycles = timetable.Cycles;
+  }
+
+  getSubjectsForToday() {
+    const date = new Date();
+    if (date.getHours() >= 17) date.setDate(date.getDate() + 1);
+
+    let day = this.days.find(
+      (e) => new Date(e.Date).getDate() === date.getDate()
+    );
+    if (!day) day = this.days[0];
+    return day;
+  }
+
+  getSubject(id: string) {
+    return this.subjects.find((e) => e.Id === id);
+  }
+
+  getHour(id: number) {
+    return this.hours.find((e) => e.Id === id);
+  }
+
+  getRoom(id: string) {
+    return this.rooms.find((e) => e.Id === id);
+  }
+
+  getTeacher(id: string) {
+    return this.teachers.find((e) => e.Id === id);
+  }
+}
+
+export interface TimetableType {
   Hours: Hour[];
   Days: Day[];
   Classes: DataType[];
