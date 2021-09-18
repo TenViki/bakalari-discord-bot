@@ -16,3 +16,7 @@ export const createEmbed = (
     )
     .setTimestamp();
 };
+
+export const createLines = (l: { name: string; value: string }[]) => {
+  return l.map((e) => `**${e.name}:** ${e.value}`).join("\n");
+};

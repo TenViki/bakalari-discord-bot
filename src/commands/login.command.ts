@@ -73,7 +73,7 @@ export const run: CommandHandler = async (i, guild, _, author) => {
   const embed = createEmbed(
     i.user,
     "Přihlášení bylo úspěšné",
-    `Práve jsme vás přihlásili do systému bakalářu na \`${guild.bakaUrl}\``
+    `Právě jsme vás přihlásili do systému bakalářu na \`${guild.bakaUrl}\``
   );
   i.reply({ embeds: [embed] });
 };

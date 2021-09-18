@@ -2,7 +2,8 @@ import { ApplicationCommandOptionData } from "discord.js";
 import { getAccessToken, getUserData } from "../api/auth";
 import { Errors } from "../errors/Errors";
 import { CommandHandler } from "../types/Command.Type";
-import { createEmbed } from "../utils/embed";
+import { refreshTokenFunction } from "../utils/commands";
+import { createEmbed, createLines } from "../utils/embed";
 import { getUser } from "../utils/user";
 
 export const run: CommandHandler = async (i, guild, client) => {
@@ -32,21 +33,9 @@ export const run: CommandHandler = async (i, guild, client) => {
   let userData = await getUserData(user.accessToken, guild.bakaUrl);
 
   if (!userData) {
-    const newAccessToken = await getAccessToken(
-      user.refreshToken,
-      guild.bakaUrl
-    );
-    if (newAccessToken.success) {
-      user.accessToken = newAccessToken.access_token;
-      userData = await getUserData(user.accessToken, guild.bakaUrl);
-      await user.save();
-    } else {
-      const errEmbed = await createEmbed(
-        i.user,
-        "Chyba",
-        Errors.TOKEN_EXPIRED,
-        true
-      );
+    userData = await refreshTokenFunction(user, guild);
+    if (!userData) {
+      const errEmbed = createEmbed(i.user, "Chyba", Errors.TOKEN_EXPIRED, true);
       i.reply({ embeds: [errEmbed] });
       return;
     }
@@ -58,11 +47,36 @@ export const run: CommandHandler = async (i, guild, client) => {
     return;
   }
 
-  const embed = createEmbed(i.user, "Profil", userData.FullName);
+  const embed = createEmbed(
+    i.user,
+    "Profil",
+    createLines([
+      {
+        name: "Jméno",
+        value: userData.FullName,
+      },
+      {
+        name: "Typ uživatele",
+        value: userData.UserTypeText,
+      },
+      {
+        name: "Třída",
+        value: userData.Class.Name ?? userData.Class.Abbrev,
+      },
+      {
+        name: "Škola",
+        value: userData.SchoolOrganizationName,
+      },
+      {
+        name: "ID Uživatele",
+        value: userData.UserUID,
+      },
+    ])
+  );
 
   i.reply({ embeds: [embed] });
 };
-export const description = () => "Ukáže ping bota";
+export const description = () => "Ukáže profil uživatele";
 export const params = (): ApplicationCommandOptionData[] => {
   return [];
 };
