@@ -1,6 +1,29 @@
 {
   "dependencies": {
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "@types/adm-zip": "^0.4.34",
     "@types/config": "^0.0.39",
-    "config": "^3.3.6"
+    "@types/jsdom": "^16.2.13",
+    "@types/mongoose": "^5.11.97",
+    "adm-zip": "^0.5.6",
+    "axios": "^0.21.4",
+    "colors": "^1.4.0",
+    "concurrently": "^6.2.1",
+    "config": "^3.3.6",
+    "discord-api-types": "^0.23.1",
+    "discord.js": "^13.1.0",
+    "jsdom": "^17.0.0",
+    "moment": "^2.29.1",
+    "mongoose": "^6.0.5"
+  },
+  "name": "bakalari-discord-bot",
+  "version": "1.0.0",
+  "main": "./dist/main.js",
+  "repository": "https://github.com/TenViki/bakalari-discord-bot.git",
+  "author": "TenViki <viktorkomarek28@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "compile": "tsc",
+    "dev": "nodemon src/main.ts"
   }
 }
