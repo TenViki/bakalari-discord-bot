@@ -13,6 +13,7 @@
     "discord-api-types": "^0.23.1",
     "discord.js": "^13.1.0",
     "jsdom": "^17.0.0",
+    "moment": "^2.29.1",
     "mongoose": "^6.0.5"
   },
   "name": "bakalari-discord-bot",

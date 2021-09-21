@@ -1,16 +1,16 @@
 import { CommandInteraction } from "discord.js";
-import { getTimetable } from "../api/timetable";
-import { Errors } from "../errors/Errors";
-import { Guild } from "../types/Guild.Type";
-import { TimetableType } from "../types/Timetable.Type";
-import { refreshTokenFunction } from "./commands";
-import { createEmbed } from "./embed";
-import { getUser } from "./user";
+import { getMarks } from "../../api/marks";
+import { Errors } from "../../errors/Errors";
+import { Guild } from "../../types/Guild.Type";
+import { MarksType } from "../../types/Marks.Type";
+import { refreshTokenFunction } from "../commands";
+import { createEmbed } from "../embed";
+import { getUser } from "../user";
 
-export const processTimetable = async (
+export const processMarks = async (
   i: CommandInteraction,
   guild: Guild | null
-): Promise<[TimetableType | null, any]> => {
+): Promise<[MarksType | null, any]> => {
   if (!guild || !i.guild) {
     const errEmbed = createEmbed(i.user, "Chyba", Errors.GUILD_REQUIRED, true);
     i.reply({ embeds: [errEmbed] });
@@ -35,25 +35,16 @@ export const processTimetable = async (
     return [null, null];
   }
 
-  const d = new Date();
-
-  if (new Date().getDay() === 5 || new Date().getDay() == 6)
-    d.setDate(d.getDate() + ((1 + 7 - d.getDay()) % 7 || 7));
-
-  let timetable = await getTimetable(
-    user.accessToken,
-    guild.bakaUrl,
-    new Date("2021-09-14")
-  );
-  if (!timetable) {
+  let marks = await getMarks(user.accessToken, guild.bakaUrl);
+  if (!marks) {
     const userData = await refreshTokenFunction(user, guild);
-    if (!userData) {
+    if (!userData?.success) {
       const errEmbed = createEmbed(i.user, "Chyba", Errors.TOKEN_EXPIRED, true);
       i.reply({ embeds: [errEmbed] });
     } else {
-      timetable = await getTimetable(user.accessToken, guild.bakaUrl, d);
+      marks = await getMarks(user.accessToken, guild.bakaUrl);
     }
   }
 
-  return [timetable, user];
+  return [marks, user];
 };

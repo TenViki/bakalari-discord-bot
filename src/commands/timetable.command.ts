@@ -1,7 +1,7 @@
 import { CommandHandler } from "../types/Command.Type";
 import { Timetable } from "../types/Timetable.Type";
 import { createEmbed } from "../utils/embed";
-import { processTimetable } from "../utils/timetable";
+import { processTimetable } from "../utils/cmd-utils/timetable";
 
 export const run: CommandHandler = async (i, guild) => {
   const [tt, user] = await processTimetable(i, guild);
@@ -44,4 +44,4 @@ export const params = () => {
   return [];
 };
 
-export const description = () => "Shows timetable";
+export const description = () => "Ukáže rovzrh hodin uživatele";

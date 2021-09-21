@@ -20,7 +20,7 @@ export class Timetable {
 
   getSubjectsForToday() {
     const date = new Date();
-    if (date.getHours() >= 17) date.setDate(date.getDate() + 1);
+    if (date.getHours() >= 15) date.setDate(date.getDate() + 1);
 
     let day = this.days.find(
       (e) => new Date(e.Date).getDate() === date.getDate()
